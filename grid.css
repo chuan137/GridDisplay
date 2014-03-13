@@ -1,0 +1,32 @@
+html body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.banner {
+    margin: 0;
+    /*height: 50px;*/
+    /*background: url(kitcube.jpg) #476c99 no-repeat;*/
+}
+
+.canvas {
+    position: absolute;
+    /*border: 1px dashed #0000bb;*/
+    /*width: 1788px;*/
+    /*height: 900px;*/
+    background: #cccccc;
+    /*margin: 40px auto 40px;*/
+}
+
+.tile {
+    position: absolute;
+    background: #555555;
+    border: 0px solid #cc0000;
+}
+
+.footer {
+    height: 40px;
+    border: 1px dashed #000;
+}

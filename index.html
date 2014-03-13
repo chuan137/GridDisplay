@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<head> 
+    <link rel="stylesheet" type="text/css" href="grid.css">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="grid.js"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            var hgt0 = screen.height 
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()
+                        - $('.canvas').css('margin-top').toNum()
+                        - $('.canvas').css('margin-bottom').toNum();
+            var wdt0 = screen.width - 100;
+            var dx = Math.floor(wdt0 / 50);
+            var dy = Math.floor(hgt0 / 50);
+            var scale = Math.floor((0.65 * screen.availHeight) / hgt0 * 100) / 100;
+
+            var hgt = dy * scale * 50;
+            var wdt = dx * scale * 50;
+            /*
+            $('.canvas').css('height', hgt0+"px");
+            $('.canvas').css('width', wdt0+"px");
+            */
+            $('.canvas').css('height', hgt+'px');
+            $('.canvas').css('width', wdt+'px');
+            
+            console.log(dx);
+            console.log(dy);
+            console.log(scale);
+            console.log(screen.width);
+            console.log(screen.height);
+        });
+
+        $(window).resize(function(){
+            var hgt0 = screen.height 
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()
+                        - $('.canvas').css('margin-top').toNum()
+                        - $('.canvas').css('margin-bottom').toNum();
+            var wdt0 = screen.width - 100;
+            var dx = Math.floor(wdt0 / 50);
+            var dy = Math.floor(hgt0 / 50);
+            var scale = Math.floor((0.65 * screen.availHeight) / hgt0 * 100) / 100;
+            var hgt = dy * scale * 50;
+            var wdt = dx * scale * 50;
+
+            console.log(screen.height);
+
+            console.log(window.innerWidth);
+            console.log(window.innerHeight);
+ 
+            console.log($(window).width());
+            console.log($(window).height());
+
+            $('.canvas').css('width', window.innerWidth+"px");
+            $('.canvas').css('height', window.innerHeight+"px");
+            //$('.canvas').css('width', $(window).width()+"px");
+            /*
+            if ($(window).height() != screen.height) {
+                $('.canvas').css('height', hgt+"px");
+                $('.canvas').css('width', wdt+"px");
+                }
+            if ($(window).height() == screen.height) {
+                $('.canvas').css('height', hgt0+"px");
+                $('.canvas').css('width', wdt0+"px");
+                } 
+                */
+        });
+     </script>
+
+</head>
+<body>
+    <div class='banner'>
+    </div>
+    <div class='canvas'>
+        <div class="tile" style="left: 0px; top: 0px; width: 1000px; height: 100px;"> </div>
+        <div class="tile" style="left: 300px; top: 200px; width: 200px; height: 100px;"> </div>
+    </div>
+    <div class='footer'>
+        <input style="width: 700px">
+    </div>
+</body>
