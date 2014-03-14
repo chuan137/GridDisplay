@@ -56,7 +56,10 @@ function submitTest() {
  */
 function newWidget(dx, dy, posx, posy, scale) {
     var holder = $('.canvas');
+
+    scale = defaultFor(scale, holder.data('scale'));
     var e = document.createElement('div');
+
     e.style.left = posx * holder.data('gridUnitX') * scale + 'px';
     e.style.top  = posy * holder.data('gridUnitY') * scale + 'px';
     e.style.width   = dx * holder.data('gridUnitX') * scale + 'px';
@@ -67,31 +70,14 @@ function newWidget(dx, dy, posx, posy, scale) {
 
 
 function drawGrid() {
-    var wspace = $('.canvas');
-    var nx = wspace.data('gridSizeX');
-    var ny = wspace.data('gridSizeY');
-
-    var scale = defaultFor(scale, wspace.data('scale'));
-    var unitx = wspace.data('gridUnitX');
-    var unity = wspace.data('gridUnitY');
-
-    var sizex_ =  unitx * scale;
-    var sizey_ =  unity * scale;
-    
-    console.log(sizex_);
-    console.log(sizey_);
-    console.log(nx);
-    console.log(ny);
-
-    for (var i = 0; i < nx; i++)
-        for(var j = 0; j < ny; j++)
+    var holder = $('.canvas');
+     
+    for (var i = 0; i < holder.data('gridSizeX'); i++)
+        for(var j = 0; j < holder.data('gridSizeY'); j++)
         {
-            var left_ = i * unitx * scale;
-            var top_ = j * unity * scale;
-
-            var htmlstr = "<div class='grid' style='left: {0}px; top: {1}px; width: {2}px; height: {3}px;'> </div>".format(
-                    left_, top_, sizex_, sizey_);
-            wspace.append(htmlstr);
+            var e = newWidget(1, 1, i, j);
+            e.className = 'grid';
+            holder.append(e.outerHTML);
         }
 }
 
