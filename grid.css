@@ -7,26 +7,35 @@ html body {
 
 .banner {
     margin: 0;
-    /*height: 50px;*/
-    /*background: url(kitcube.jpg) #476c99 no-repeat;*/
+    height: 50px;
+    background: url(kitcube.jpg) #476c99 no-repeat;
 }
 
 .canvas {
-    position: absolute;
+    position: relative;
     /*border: 1px dashed #0000bb;*/
     /*width: 1788px;*/
     /*height: 900px;*/
     background: #cccccc;
-    /*margin: 40px auto 40px;*/
+    margin: 40px auto 40px;
+    border: 5px solid #cccccc;
 }
 
 .tile {
     position: absolute;
-    background: #555555;
-    border: 0px solid #cc0000;
+    box-sizing: border-box;
+    background: #338FFF;
+    border: 3px solid white;
+    padding: 20px;
+}
+
+.grid {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px solid black;
 }
 
 .footer {
     height: 40px;
-    border: 1px dashed #000;
+    //border: 0px dashed #000;
 }
