@@ -20,35 +20,39 @@ function defaultFor(arg, val) {
 }
 
 function submitTest() {
-    testfuncstring = $('#testfunction').val();
+    fncstring = $('#testfunction').val();
 
-    var funcname = /^[a-zA-Z0-9]+/.exec(testfuncstring);
-    var args =  /\(([^)]+)/.exec(testfuncstring);
-    var fn = window[funcname];
+    var fncname = /^[a-zA-Z0-9]+/.exec(fncstring);
+    var args =  /\(([^)]+)/.exec(fncstring);
 
-    console.log(funcname, args);
-    console.log(fn);
-    console.log(typeof fn);
-
-    if (fn == null || typeof fn !== "function") {
-        alert('function "' + funcname + '" not defined');
-    }
-
+    fncname = fncname[0];
     args = args[1].split(/\s*,\s*/);
+    console.log(fncname, args);
+
     if (args.length < 5) {
         alert('not enough number of parameters');
+        return;
     }
-    for (var i = 0; i < 4; i++) args[i] = args[i].toNum();
 
-    try {
-        if (typeof fn === "function") {
-            callreturn = fn.apply(null, args);
-        }
-        $('.canvas').append( callreturn );
+    args[4] = /[^'"]+/.exec(args[4]);
+    for (var i = 0; i < 4; i++) 
+            args[i] = args[i].toNum();
+
+    console.log(args[5]);
+    console.log(fncname);
+
+    switch(fncname) {
+        case "drawText":
+            var e = drawText(args[0], args[1], args[2], args[3], args[4], args[5]);
+            break;
+        default:
+            alert('function "' + fncname + '" not defined');
     }
-    catch (e) {
-        console.log(e);
-    }
+
+    if (e !== 'undefined')
+        $('.canvas').append(e.outerHTML);
+
+    return;
 }
 
 /*
@@ -69,8 +73,18 @@ function newWidget(dx, dy, posx, posy, scale) {
 }
 
 
-function drawGrid() {
+function toggleGrid() {
     var holder = $('.canvas');
+    var attr = holder.attr('grid');
+
+
+    if (typeof attr !== 'undefined' && attr !== false) {
+        holder.children('.grid').remove();
+        holder.removeAttr('grid');
+        return;
+    }
+
+    holder.attr('grid', 'grid');
      
     for (var i = 0; i < holder.data('gridSizeX'); i++)
         for(var j = 0; j < holder.data('gridSizeY'); j++)
@@ -79,20 +93,14 @@ function drawGrid() {
             e.className = 'grid';
             holder.append(e.outerHTML);
         }
+    return;
 }
 
 
 function drawText(dx, dy, posx, posy, str, scale) {
-    scale = defaultFor(scale, $('.canvas').data('scale'));
-    unitx = $('.canvas').data('gridUnitX');
-    unity = $('.canvas').data('gridUnitY');
-    
-    var left_ = posx * unitx * scale;
-    var top_ = posy * unity * scale;
-    var sizex_ = dx * unitx * scale;
-    var sizey_ = dy * unity * scale;
-
-    var newdiv = "<div class={0} style='left: {1}px; top: {2}px; width: {3}px; height: {4}px'> {5}</div>".format(
-            'tile', left_, top_, sizex_, sizey_, str);
-    return newdiv;
+    //scale = defaultFor(scale, $('.canvas').data('scale'));
+    var e = newWidget(dx, dy, posx, posy);
+    e.className = 'tile';
+    e.innerHTML = str;
+    return e;
 }

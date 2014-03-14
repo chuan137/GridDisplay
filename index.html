@@ -59,7 +59,7 @@
         });
         
         $(function() {
-            $( " #canvasButton2" ).on('click', drawGrid);
+            $( " #canvasButton2" ).on('click', toggleGrid);
         });
 
         $(function() {
@@ -75,8 +75,8 @@
         <div class="tile" style="left: 300px; top: 200px; width: 200px; height: 100px;"> </div>
     </div>
     <div class='footer'>
-            <input id='testfunction' style="width: 700px">
+            <input id='testfunction' style="width: 700px" value='drawText(5,5,10,9,"test");'>
             <input type="button" value="submit" id="canvasButton">
-        <input type="button" value="test" id="canvasButton2">
+        <input type="button" value="grid" id="canvasButton2">
     </div>
 </body>
