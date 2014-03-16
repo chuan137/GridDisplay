@@ -29,14 +29,18 @@ function submitTest() {
     args = args[1].split(/\s*,\s*/);
     console.log(fncname, args);
 
+    /*
     if (args.length < 5) {
         alert('not enough number of parameters');
         return;
     }
+    */
 
-    args[4] = /[^'"]+/.exec(args[4]);
+    /*
     for (var i = 0; i < 4; i++) 
             args[i] = args[i].toNum();
+            */
+    args[4] = /[^'"]+/.exec(args[4]);
 
     console.log(args[5]);
     console.log(fncname);
@@ -44,6 +48,9 @@ function submitTest() {
     switch(fncname) {
         case "drawText":
             var e = drawText(args[0], args[1], args[2], args[3], args[4], args[5]);
+            break;
+        case "drawSensor":
+            var e = drawSensor(args[0], args[1], args[2], args[3]);
             break;
         default:
             alert('function "' + fncname + '" not defined');
@@ -103,4 +110,18 @@ function drawText(dx, dy, posx, posy, str, scale) {
     e.className = 'tile';
     e.innerHTML = str;
     return e;
+}
+
+function drawSensor(posx, posy, sensorid, scale) {
+    var e = newWidget(4, 3, posx, posy);
+    sensorname = 'sensor name';
+    sensorvalue = 86;
+    e.className = 'tile';
+    var str =  '<div style="font-size: 10px; float: left">{0}</div>'.format(sensorname);
+    str += '<div style="positon: absolute; top: 50; right: 10; font-size: 50px">{0}</div>'.format(sensorvalue);
+
+    e.innerHTML = str;
+    
+    return e;
+ 
 }
