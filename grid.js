@@ -80,7 +80,14 @@ function initPage(){
             girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
             girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
 
+            /*
             var hgt = screen.availHeight - 150
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()
+                        - $('.canvas').css('margin-top').toNum()
+                        - $('.canvas').css('margin-bottom').toNum();
+                        */
+            var hgt = $(window).height() 
                         - $('.banner').css('height').toNum()
                         - $('.footer').css('height').toNum()
                         - $('.canvas').css('margin-top').toNum()
@@ -108,6 +115,8 @@ function initPage(){
             console.log("scale:", scale);       // canvas relative scale between fullscreen and maximize
             console.log("canvas size:", wdt0, hgt0);  // canvas size when fullscreen
             console.log("canvas size:", wdt, hgt);    // canvas size when maximize
+            console.log($("body").height());
+            console.log($(window).height());
 }
 
 
