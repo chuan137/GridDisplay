@@ -19,6 +19,78 @@ function defaultFor(arg, val) {
     return typeof arg !== 'undefined' ? arg : val;
 }
 
+
+// Sensor List
+//
+var urlbase = 'http://katrin.kit.edu/adei/services/getdata.php';
+var SNS = {
+    'sensorid1': {
+        'name': 'sensor name',
+        'comment': 'sensor comment',
+        'min': 0,
+        'max': 100,
+        'url': urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&windows=-1'.format(
+                'a','b','c','d'),
+    },
+    'sensorid2': {
+        'name': 'sensor name',
+        'comment': 'sensor comment',
+        'min': 0,
+        'max': 100,
+        'url': urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&windows=-1'.format(
+                'a','b','c','d'),
+    },
+};
+
+function initPage(){
+            var wdt0 = screen.width - 100;
+            var hgt0 = screen.height 
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()
+                        - $('.canvas').css('margin-top').toNum()
+                        - $('.canvas').css('margin-bottom').toNum();
+
+            var gridUnitX = 50;
+            var gridUnitY = 50;
+
+            var gridSizeX = Math.floor(wdt0 / gridUnitX);
+            var gridSizeY = Math.floor(hgt0 / gridUnitY);
+
+            girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
+            girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
+
+            var hgt = screen.availHeight - 120
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()
+                        - $('.canvas').css('margin-top').toNum()
+                        - $('.canvas').css('margin-bottom').toNum();
+            var scale = Math.floor(hgt / hgt0 * 100) / 100;
+
+            var wdt = gridSizeX * scale * 50;
+            hgt = gridSizeY * scale * 50;
+
+            $('.canvas').data('height', hgt);
+            $('.canvas').data('width', wdt);
+            $('.canvas').data('height-fullscreen', hgt0);
+            $('.canvas').data('width-fullscreen', wdt0);
+
+            $('.canvas').data('gridUnitX', gridUnitX);
+            $('.canvas').data('gridUnitY', gridUnitY);
+            $('.canvas').data('gridSizeX', gridSizeX);
+            $('.canvas').data('gridSizeY', gridSizeY);
+            $('.canvas').data('scale', scale);
+
+            $('.canvas').css('height', hgt+'px');
+            $('.canvas').css('width', wdt+'px');
+            
+            console.log("gridSize:", gridSizeX, gridSizeY);  // grid dimensions
+            console.log("scale:", scale);       // canvas relative scale between fullscreen and maximize
+            console.log("canvas size:", wdt0, hgt0);  // canvas size when fullscreen
+            console.log("canvas size:", wdt, hgt);    // canvas size when maximize
+}
+
+
+
 function submitTest() {
     fncstring = $('#testfunction').val();
 
@@ -40,17 +112,21 @@ function submitTest() {
     for (var i = 0; i < 4; i++) 
             args[i] = args[i].toNum();
             */
-    args[4] = /[^'"]+/.exec(args[4]);
 
     console.log(args[5]);
     console.log(fncname);
 
     switch(fncname) {
         case "drawText":
+            args[4] = /[^'"]+/.exec(args[4]);
             var e = drawText(args[0], args[1], args[2], args[3], args[4], args[5]);
             break;
         case "drawSensor":
             var e = drawSensor(args[0], args[1], args[2], args[3]);
+            break;
+        case "drawS0":
+            args[2] = /[^'"]+/.exec(args[2]);
+            var e = drawS0(args[0], args[1], args[2], args[3]);
             break;
         default:
             alert('function "' + fncname + '" not defined');
@@ -61,6 +137,7 @@ function submitTest() {
 
     return;
 }
+
 
 /*
  * Library for Widgets
@@ -112,8 +189,65 @@ function drawText(dx, dy, posx, posy, str, scale) {
     return e;
 }
 
+
+function sensorTemplate(e, sensorId) {
+    /*
+    var name = SNS[sensorId]['name'];
+    var comment = SNS[sensorId]['comment'];
+    var min = SNS[sensorId]['min'];
+    var max = SNS[sensorId]['max'];
+
+    var s0 = document.createElement('div');
+    s0.style.position = 'absolute';
+    s0.style.fontSize = '12px';
+    s0.style.left = '5px';
+    s0.innerHTML = name;
+    s0.innerHTML += '<br>' + comment;
+    */
+
+    var s0 = document.createElement('div');
+    s0.style.position = 'absolute';
+    s0.style.fontSize = '12px';
+    s0.style.left = '5px';
+    s0.innerHTML = this.name;
+ 
+    var s1 = document.createElement('div');
+    s1.style.position = 'absolute';
+    s1.style.fontSize = '64px';
+    s1.style.right = '8px';
+    s1.style.bottom = '-4px';
+    s1.innerHTML = 85.1;
+
+    e.appendChild(s0);
+    e.appendChild(s1);
+}
+
+
+function newW0(dx, dy, px, py, scale) {
+    var holder = $('.canvas');
+    scale = defaultFor(scale, holder.data('scale'));
+
+    var e = document.createElement('div');
+    e.className = 'tile';
+    e.style.left = px * holder.data('gridUnitX') * scale + 'px';
+    e.style.top  = py * holder.data('gridUnitY') * scale + 'px';
+    e.style.width   = dx * holder.data('gridUnitX') * scale + 'px';
+    e.style.height  = dy * holder.data('gridUnitY') * scale + 'px';
+
+    return e;
+}
+
+
+function drawS0(px, py, sensorId, scale) {
+    var e = newW0(5, 3, px, py);
+    //sensorTemplate(e, sensorId);
+    sensorTemplate.bind(SNS[sensorId]);
+
+    return e;
+}
+
 function drawSensor(posx, posy, sensorid, scale) {
-    var e = newWidget(4, 3, posx, posy);
+    var e = newWidget(5, 3, posx, posy);
     sensorname = 'sensor name';
     sensorvalue = 86;
     e.className = 'tile';

@@ -13,9 +13,7 @@ html body {
 
 .canvas {
     position: relative;
-    /*border: 1px dashed #0000bb;*/
-    /*width: 1788px;*/
-    /*height: 900px;*/
+    font-family: arial;
     background: #cccccc;
     margin: 40px auto 40px;
     border: 5px solid #cccccc;

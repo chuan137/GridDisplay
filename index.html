@@ -6,64 +6,10 @@
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="grid.js"></script>
     <script type="text/javascript"> 
-        $(document).ready(function(){
-            var wdt0 = screen.width - 100;
-            var hgt0 = screen.height 
-                        - $('.banner').css('height').toNum()
-                        - $('.footer').css('height').toNum()
-                        - $('.canvas').css('margin-top').toNum()
-                        - $('.canvas').css('margin-bottom').toNum();
-
-            var gridUnitX = 50;
-            var gridUnitY = 50;
-
-            var gridSizeX = Math.floor(wdt0 / gridUnitX);
-            var gridSizeY = Math.floor(hgt0 / gridUnitY);
-
-            girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
-            girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
-
-            var scale = Math.floor((0.68 * screen.availHeight) / hgt0 * 100) / 100;
-
-            var wdt = gridSizeX * scale * 50;
-            var hgt = gridSizeY * scale * 50;
-
-            $('.canvas').data('height', hgt);
-            $('.canvas').data('width', wdt);
-            $('.canvas').data('height-fullscreen', hgt0);
-            $('.canvas').data('width-fullscreen', wdt0);
-
-            $('.canvas').data('gridUnitX', gridUnitX);
-            $('.canvas').data('gridUnitY', gridUnitY);
-            $('.canvas').data('gridSizeX', gridSizeX);
-            $('.canvas').data('gridSizeY', gridSizeY);
-            $('.canvas').data('scale', scale);
-
-            $('.canvas').css('height', hgt+'px');
-            $('.canvas').css('width', wdt+'px');
-            
-            console.log("gridSize:", gridSizeX, gridSizeY);  // grid dimensions
-            console.log("scale:", scale);       // canvas relative scale between fullscreen and maximize
-            console.log("canvas size:", wdt0, hgt0);  // canvas size when fullscreen
-            console.log("canvas size:", wdt, hgt);    // canvas size when maximize
-        });
-
-        $(window).resize(function(){
-            console.log("window inner Height:", window.innerHeight);
-            console.log("screen available Height:", screen.availHeight);
-            console.log("screen Height:", screen.height);
-            if ( (screen.availHeight || screen.height-100) <= window.innerHeight) {
-                $('.canvas').css('width', $('.canvas').data('width')+'px');
-                $('.canvas').css('height', $('.canvas').data('height')+'px');
-            }
-        });
-        
-        $(function() {
-            $( " #canvasButton2" ).on('click', toggleGrid);
-        });
-
-        $(function() {
+        $(document).ready(function() {
+            initPage();
             $( " #canvasButton " ).on('click', submitTest);
+            $( " #canvasButton2" ).on('click', toggleGrid);
         });
      </script>
 </head>
@@ -80,7 +26,7 @@
         <div class="tile" style="left: 300px; top: 200px; width: 200px; height: 100px;"> </div>
     </div>
     <div class='footer'>
-            <input id='testfunction' style="width: 700px" value='drawSensor(10,9,5);'>
+            <input id='testfunction' style="width: 700px" value='drawS0(10,9,"sensorid1");'>
             <input type="button" value="submit" id="canvasButton">
         <input type="button" value="grid" id="canvasButton2">
     </div>
