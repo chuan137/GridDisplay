@@ -19,18 +19,38 @@ function defaultFor(arg, val) {
     return typeof arg !== 'undefined' ? arg : val;
 }
 
+function getAdeiData(url) {
+    var xhr = window.XMLHttpRequest 
+            ? new XMLHttpRequest() 
+            : new ActiveXObject('Microsoft.XMLHTTP');
+    xhr.onreadystatechange = function() {
+        console.log(xhr.responseText);
+        return xhr.responseText;
+    }
+    console.log(url);
+    xhr.open('GET', url, true);
+    xhr.send(null);
+}
 
 // Sensor List
 //
 var urlbase = 'http://katrin.kit.edu/adei/services/getdata.php';
 var SNS = {
     'sensorid1': {
-        'name': 'sensor name',
-        'comment': 'sensor comment',
-        'min': 0,
-        'max': 100,
-        'url': urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&windows=-1'.format(
-                'a','b','c','d'),
+        name: 'sensor name',
+        comment: 'sensor comment',
+        min: 0,
+        max: 100,
+        url: urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&window=-1'.format(
+                'temp0',
+                'BakeOut2013',
+                'TempMon',
+                1),
+        getdata: function() {
+            res = $.get(this.url, function(data) {
+                this.data = data;
+            });
+        },
     },
     'sensorid2': {
         'name': 'sensor name',
@@ -41,6 +61,7 @@ var SNS = {
                 'a','b','c','d'),
     },
 };
+
 
 function initPage(){
             var wdt0 = screen.width - 100;
@@ -59,7 +80,7 @@ function initPage(){
             girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
             girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
 
-            var hgt = screen.availHeight - 120
+            var hgt = screen.availHeight - 150
                         - $('.banner').css('height').toNum()
                         - $('.footer').css('height').toNum()
                         - $('.canvas').css('margin-top').toNum()
@@ -190,33 +211,20 @@ function drawText(dx, dy, posx, posy, str, scale) {
 }
 
 
-function sensorTemplate(e, sensorId) {
-    /*
-    var name = SNS[sensorId]['name'];
-    var comment = SNS[sensorId]['comment'];
-    var min = SNS[sensorId]['min'];
-    var max = SNS[sensorId]['max'];
-
-    var s0 = document.createElement('div');
-    s0.style.position = 'absolute';
-    s0.style.fontSize = '12px';
-    s0.style.left = '5px';
-    s0.innerHTML = name;
-    s0.innerHTML += '<br>' + comment;
-    */
-
+function sensorTemplate(e) {
     var s0 = document.createElement('div');
     s0.style.position = 'absolute';
     s0.style.fontSize = '12px';
     s0.style.left = '5px';
     s0.innerHTML = this.name;
+    s0.innerHTML += '<br>' + this.comment;
  
     var s1 = document.createElement('div');
     s1.style.position = 'absolute';
     s1.style.fontSize = '64px';
     s1.style.right = '8px';
     s1.style.bottom = '-4px';
-    s1.innerHTML = 85.1;
+    s1.innerHTML = this.max;
 
     e.appendChild(s0);
     e.appendChild(s1);
@@ -240,8 +248,9 @@ function newW0(dx, dy, px, py, scale) {
 
 function drawS0(px, py, sensorId, scale) {
     var e = newW0(5, 3, px, py);
-    //sensorTemplate(e, sensorId);
-    sensorTemplate.bind(SNS[sensorId]);
+    bindfunc = sensorTemplate.bind(SNS[sensorId]);
+
+    bindfunc(e);
 
     return e;
 }
