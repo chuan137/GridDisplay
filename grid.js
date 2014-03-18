@@ -64,38 +64,41 @@ var SNS = {
 
 
 function initPage(){
-            var wdt0 = screen.width - 100;
-            var hgt0 = screen.height 
-                        - $('.banner').css('height').toNum()
-                        - $('.footer').css('height').toNum()
-                        - $('.canvas').css('margin-top').toNum()
-                        - $('.canvas').css('margin-bottom').toNum();
+            var gridUnitX = 40;
+            var gridUnitY = 40;
 
-            var gridUnitX = 50;
-            var gridUnitY = 50;
+            var wdt0 = screen.width - 60;
+            var hgt0 = (screen.height - 15 
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum()) * 0.9;
 
             var gridSizeX = Math.floor(wdt0 / gridUnitX);
             var gridSizeY = Math.floor(hgt0 / gridUnitY);
-
             girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
             girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
 
-            /*
-            var hgt = screen.availHeight - 150
+            var hgt = ($(window).height() 
                         - $('.banner').css('height').toNum()
-                        - $('.footer').css('height').toNum()
-                        - $('.canvas').css('margin-top').toNum()
-                        - $('.canvas').css('margin-bottom').toNum();
-                        */
-            var hgt = $(window).height() 
-                        - $('.banner').css('height').toNum()
-                        - $('.footer').css('height').toNum()
-                        - $('.canvas').css('margin-top').toNum()
-                        - $('.canvas').css('margin-bottom').toNum();
+                        - $('.footer').css('height').toNum()) * 0.98;
             var scale = Math.floor(hgt / hgt0 * 100) / 100;
+            var wdt = gridSizeX * gridUnitX * scale;
+            hgt = gridSizeY * gridUnitY * scale;
 
-            var wdt = gridSizeX * scale * 50;
-            hgt = gridSizeY * scale * 50;
+            var margin = ($(window).height() 
+                        - $('.banner').css('height').toNum()
+                        - $('.footer').css('height').toNum() 
+                        - hgt)/2;
+
+            //alert('{0} x {1}'.format(screen.width, screen.height));
+
+            $('.canvas').css('margin-top', margin + 'px');
+            $('.canvas').css('margin-bottom', margin + 'px');
+            $('.canvas').css('margin-left', 'auto');
+            $('.canvas').css('margin-right', 'auto');
+            
+            console.log($('.canvas').css('margin-top'));
+            console.log($('.canvas').css('margin-bottom'));
+
 
             $('.canvas').data('height', hgt);
             $('.canvas').data('width', wdt);
