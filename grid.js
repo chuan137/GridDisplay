@@ -64,8 +64,8 @@ var SNS = {
 
 
 function initPage(){
-            var gridUnitX = 40;
-            var gridUnitY = 40;
+            var gridUnitX = 50;
+            var gridUnitY = 50;
 
             var wdt0 = screen.width - 60;
             var hgt0 = (screen.height - 15 
@@ -79,7 +79,7 @@ function initPage(){
 
             var hgt = ($(window).height() 
                         - $('.banner').css('height').toNum()
-                        - $('.footer').css('height').toNum()) * 0.98;
+                        - $('.footer').css('height').toNum())*0.95;
             var scale = Math.floor(hgt / hgt0 * 100) / 100;
             var wdt = gridSizeX * gridUnitX * scale;
             hgt = gridSizeY * gridUnitY * scale;
@@ -87,7 +87,7 @@ function initPage(){
             var margin = ($(window).height() 
                         - $('.banner').css('height').toNum()
                         - $('.footer').css('height').toNum() 
-                        - hgt)/2;
+                        - hgt*1.02)/2;
 
             //alert('{0} x {1}'.format(screen.width, screen.height));
 
