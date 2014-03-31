@@ -6,10 +6,10 @@ function newWidget(dx, dy, px, py, scale) {
     e.dataset.scale = scale;
 
     e.className = 'tile';
-    e.style.left = px * holder.data('gridUnitX') * scale + 'px';
-    e.style.top  = py * holder.data('gridUnitY') * scale + 'px';
-    e.style.width   = dx * holder.data('gridUnitX') * scale + 'px';
-    e.style.height  = dy * holder.data('gridUnitY') * scale + 'px';
+    e.style.left = px * holder.data('gridUnitX') + 'px';
+    e.style.top  = py * holder.data('gridUnitY') + 'px';
+    e.style.width   = dx * holder.data('gridUnitX') + 'px';
+    e.style.height  = dy * holder.data('gridUnitY') + 'px';
 
     return e;
 }
@@ -32,7 +32,7 @@ function sensorTemplate(e) {
     s1.style.bottom = 0*scale + 'px';
     s1.innerHTML = (this.value === undefined)
         ? 'NAN'
-        : this.value.toFixed(1);
+        : this.value.toFixed(3);
 
     var s2 = document.createElement('div');
     s2.style.position = 'absolute';
@@ -86,8 +86,19 @@ function updateAllSensors() {
         updateSensor(sensor);
         var value = (sensor.value === undefined)
             ? 'NAN'
-            : sensor.value;
-        $('#'+sensor.id).html(value.toFixed(3));
+            : sensor.value.toFixed(3);
+        $('#'+sensor.id).html(value);
     }
 }
 
+function sensorGroupTemplate(e) {
+    
+
+}
+
+function addSensorGroup(dx, dy, px, py, name) {
+    var e = newWidget(dx, dy, px, py, scale);
+    drawGroup = sensorGroupTemplate.bind(GRP[0]);
+    drawGroup(e);
+    return e;
+}

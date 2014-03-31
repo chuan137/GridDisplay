@@ -8,7 +8,7 @@
     <script type="text/javascript" src="widget.js"></script>
     <script type="text/javascript"> 
         $(document).ready(function() {
-            initPage();
+            initPage2(36,18);
             setInterval(updateAllSensors, 1000);
             //$('.canvas').append(addSensor(4, 6, 'sensor1').outerHTML);
             $( " #canvasButton " ).on('click', submitTest);
@@ -21,12 +21,14 @@
     <div class='banner'>
     </div>
     <div class='canvas'>
+        <!--
         <div class="tile" style="left: 0px; top: 0px; width: 190px; height: 94px;">
             <div style="position: absolute; left: 5px; top: 0px; font-size: 12px">sensor name and comment<br>can be two lines </div>
             <div style="position: absolute; left: 5px; bottom: 2px; font-size: 10px">min: xx.x<br>max: xx.x<br>alert: 4</div>
             <div style="position: absolute; right: 8px; bottom: -4px; font-size: 54px"> 85.2 </div>
             <div style="position: absolute; right: 2px; top: 20px; font-size: 12px">km/h</div>
         </div>
+        -->
         <!--
         <div class="tile" style="left: 300px; top: 200px; width: 200px; height: 100px;"> </div>
         -->

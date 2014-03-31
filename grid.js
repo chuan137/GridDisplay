@@ -80,40 +80,42 @@ function toggleGrid() {
 /*
  * Sensor List
  */
-var urlbase = 'http://katrin.kit.edu/adei/services/getdata.php';
-var SNS = {
-    'sensor1': {
-        id: 'sensorid1',
-        name: '200mm from vessel wall',
-        comment: '435-RTP-5-0-0103',
-        min: 0,
-        max: 100,
-        unit: 'C',
-        url: urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&window=-1'.format(
-                'temp0',
-                'BakeOut2013',
-                'TempMon',
-                1),
-    },
-    'sensor2': {
-        id: 'sensorid2',
-        name: 'base #2 downstream up right',
-        comment: '435-RTP-5-0-0300',
-        min: 0,
-        max: 100,
-        unit: 'C',
-        server: 'temp0',
-        database: 'BakeOut2013',
-        group: 'TempMon',
-        mask: 2,
-        url: urlbase + '?db_server={0}&db_name={1}&db_group={2}&db_mask={3}&window=-1'.format(
-                'temp0',
-                'BakeOut2013',
-                'TempMon',
-                2),
-    },
-};
+function initPage2(sizeX, sizeY) {
+    var unit0 = 50;
+    var wgt = $(window).width() * 0.96;
+    var hgt = ($(window).height()
+                - $('.banner').css('height').toNum()
+                - $('.footer').css('height').toNum())*0.96;
 
+    var scale1 = wgt/ (sizeX*unit0);
+    var scale2 = hgt/ (sizeY*unit0);
+    var scale = (scale2 < scale1) ? scale2 : scale1;
+    scale = Math.floor(scale*100)/100;
+    
+    console.log(scale1, scale2);
+
+    var margin = ($(window).height()
+                - $('.banner').css('height').toNum()
+                - $('.footer').css('height').toNum()
+                - sizeY * unit0 * scale)/2.;
+
+
+    $('.canvas').css('margin-top', margin + 'px');
+    $('.canvas').css('height', sizeY*unit0*scale + 'px');
+    $('.canvas').css('width', sizeX*unit0*scale + 'px');
+
+    $('.canvas').data('gridUnitX', unit0*scale);
+    $('.canvas').data('gridUnitY', unit0*scale);
+    $('.canvas').data('gridSizeX', sizeX);
+    $('.canvas').data('gridSizeY', sizeY);
+    $('.canvas').data('scale', scale);
+    $('.canvas').data('unit0', unit0);
+
+    console.log('gridSize', sizeX, sizeY);
+    console.log('unitX/Y', unit0*scale);
+    console.log('scale', scale1, scale2, scale);
+
+}
 
 function initPage(){
     var gridUnitX = 50;
@@ -174,10 +176,10 @@ function newWidget0(dx, dy, posx, posy, scale) {
     scale = defaultFor(scale, holder.data('scale'));
     var e = document.createElement('div');
 
-    e.style.left = posx * holder.data('gridUnitX') * scale + 'px';
-    e.style.top  = posy * holder.data('gridUnitY') * scale + 'px';
-    e.style.width   = dx * holder.data('gridUnitX') * scale + 'px';
-    e.style.height  = dy * holder.data('gridUnitY') * scale + 'px';
+    e.style.left = posx * holder.data('unit') * scale + 'px';
+    e.style.top  = posy * holder.data('unit') * scale + 'px';
+    e.style.width   = dx * holder.data('unit') * scale + 'px';
+    e.style.height  = dy * holder.data('unit') * scale + 'px';
 
     return e;
 }
