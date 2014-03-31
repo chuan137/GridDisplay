@@ -164,6 +164,44 @@ function initPage(){
     console.log("canvas size:", wdt, hgt);    // canvas size when maximize
 }
 
+function initPage2(sizeX, sizeY) {
+    var unit0 = 50;
+    var wgt = $(window).width() * 0.96;
+    var hgt = ($(window).height()
+                - $('.banner').css('height').toNum()
+                - $('.footer').css('height').toNum())*0.96;
+
+    var scale1 = wgt/ sizeX*unit0;
+    var scale2 = wgt/ sizeY*unit0;
+    var scale = (scale2 < scale1) ? scale2 : scale1;
+    scale = Math.floor(scale*100)/100;
+    
+
+
+
+    console.log(scale1, scale2);
+
+    var margin = ($(window).height()
+                - $('.banner').css('height').toNum()
+                - $('.footer').css('height').toNum()
+                - sizeY * unit0 * scale)/2.;
+
+
+    $('.canvas').css('margin-top', margin + 'px');
+    $('.canvas').css('height', sizeY*unit0*scale + 'px');
+    $('.canvas').css('width', sizeX*unit0*scale + 'px');
+
+    $('.canvas').data('gridUnitX', unit0*scale);
+    $('.canvas').data('gridUnitY', unit0*scale);
+    $('.canvas').data('gridSizeX', sizeX);
+    $('.canvas').data('gridSizeY', sizeY);
+    $('.canvas').data('scale', scale);
+
+    console.log('gridSize', sizeX, sizeY);
+    console.log('unitX/Y', unit0*scale);
+    console.log('scale', scale1, scale2, scale);
+
+}
 
 /*
  * Library for Widgets

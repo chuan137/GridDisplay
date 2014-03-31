@@ -19,7 +19,7 @@ function sensorTemplate(e) {
 
     var s0 = document.createElement('div');
     s0.style.position = 'absolute';
-    s0.style.fontSize = 13*scale + 'px';
+    s0.style.fontSize = 18*scale + 'px';
     s0.style.left = 5*scale + 'px';
     s0.innerHTML = this.name;
     s0.innerHTML += '<br>' + this.comment;
@@ -27,7 +27,7 @@ function sensorTemplate(e) {
     var s1 = document.createElement('div');
     s1.id = this.id;
     s1.style.position = 'absolute';
-    s1.style.fontSize = 50*scale + 'px';
+    s1.style.fontSize = 60*scale + 'px';
     s1.style.right = 6*scale + 'px';
     s1.style.bottom = 0*scale + 'px';
     s1.innerHTML = (this.value === undefined)
@@ -69,7 +69,7 @@ function sensorFetchData() {
 
 
 function addSensor(px, py, sensorId, scale) {
-    var e = newWidget(4, 2, px, py, scale);
+    var e = newWidget(5, 3, px, py, scale);
     drawSensor = sensorTemplate.bind(SNS[sensorId]);
     drawSensor(e);
     return e;
@@ -91,3 +91,13 @@ function updateAllSensors() {
     }
 }
 
+function drawMeter(e) {
+    var scale = e.dataset.scale;
+
+}
+
+
+function addMeter(px, py, sensorId, scale) {
+    var e = newWidget(8,8,px,py,scale);
+    return e;
+}
