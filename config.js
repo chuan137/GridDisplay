@@ -35,8 +35,9 @@ var SNS = {
 
 var GRP = {
     'group1': {
-        name: 'Vessel Temperature';
-    }
+        name: 'Vessel Temperature',
+        style: 'group',
+    },
 
 
 };

@@ -96,9 +96,11 @@ function sensorGroupTemplate(e) {
 
 }
 
-function addSensorGroup(dx, dy, px, py, name) {
+function addSensorGroup(dx, dy, px, py, name, scale) {
     var e = newWidget(dx, dy, px, py, scale);
-    drawGroup = sensorGroupTemplate.bind(GRP[0]);
+    e.className = 'group';
+    e.className += ' resizable draggable';
+    drawGroup = sensorGroupTemplate.bind(GRP['group1']);
     drawGroup(e);
     return e;
 }

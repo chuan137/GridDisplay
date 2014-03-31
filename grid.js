@@ -44,6 +44,9 @@ function submitTest() {
         case "updatePage":
             updatePage();
             break;
+        case "addSensorGroup":
+            var e = addSensorGroup(args[0], args[1], args[2], args[3], args[4]);
+            break;
         default:
             alert('function "' + fncname + '" not defined');
     }
