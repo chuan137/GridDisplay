@@ -8,19 +8,13 @@
     <script type="text/javascript" src="widget.js"></script>
     <script type="text/javascript"> 
         $(document).ready(function() {
-            initPage2();
-            sensors();
+            initPage2(40,18);
             //setInterval(updateAllSensors, 1000);
             //$('.canvas').append(addSensor(4, 6, 'sensor1').outerHTML);
             $( " #canvasButton " ).on('click', submitTest);
             $( " #canvasButton2" ).on('click', toggleGrid);
         });
 
-        function sensors () {
-            e1 = addSensor(5,5, 'sensor1');
-            $('.canvas').append(e1);
-
-        }
      </script>
 </head>
 <body>
@@ -39,7 +33,7 @@
         -->
     </div>
     <div class='footer'>
-            <input id='testfunction' style="width: 400px" value='addSensor(10,9,"sensor1");'>
+            <input id='testfunction' style="width: 400px" value='addSortableGroup(5,5,10,10,"sensor1");'>
             <input type="button" value="submit" id="canvasButton">
         <input type="button" value="grid" id="canvasButton2">
     </div>

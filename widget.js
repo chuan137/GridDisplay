@@ -1,15 +1,14 @@
-function newWidget(dx, dy, px, py, scale) {
+function newWidget(px, py, dx, dy, scale) {
     var e = document.createElement('div');
     var holder = $('.canvas');
 
     scale = defaultFor(scale, holder.data('scale'));
     e.dataset.scale = scale;
 
-    e.className = 'tile';
-    e.style.left = px * holder.data('gridUnitX') * scale + 'px';
-    e.style.top  = py * holder.data('gridUnitY') * scale + 'px';
-    e.style.width   = dx * holder.data('gridUnitX') * scale + 'px';
-    e.style.height  = dy * holder.data('gridUnitY') * scale + 'px';
+    e.style.left = px * holder.data('gridUnitX') + 'px';
+    e.style.top  = py * holder.data('gridUnitY') + 'px';
+    e.style.width   = dx * holder.data('gridUnitX') + 'px';
+    e.style.height  = dy * holder.data('gridUnitY') + 'px';
 
     return e;
 }
@@ -69,7 +68,8 @@ function sensorFetchData() {
 
 
 function addSensor(px, py, sensorId, scale) {
-    var e = newWidget(5, 3, px, py, scale);
+    var e = newWidget(px, py, 5, 3, scale);
+    e.className = 'tile';
     drawSensor = sensorTemplate.bind(SNS[sensorId]);
     drawSensor(e);
     return e;
@@ -98,6 +98,25 @@ function drawMeter(e) {
 
 
 function addMeter(px, py, sensorId, scale) {
-    var e = newWidget(8,8,px,py,scale);
+    var e = newWidget(px,py,8,8,scale);
     return e;
+}
+
+
+function addSortableGroup(px, py, dx, dy, groupId, scale) {
+    var w = newWidget(px, py, dx, dy, scale);
+    w.className = 'group';
+    
+    var c = document.createElement('div');
+    c.className = 'sortable';
+
+    for (var i=0; i<10; i++) {
+        var t = newWidget(0, 0, 2, 2, scale);
+        t.className = 'subtile';
+        t.innerHTML = i;
+        $(c).append($(t));
+    }
+
+    $(w).append($(c));
+    $(w).appendTo($(this));
 }
