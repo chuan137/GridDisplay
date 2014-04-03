@@ -45,15 +45,23 @@ function submitTest() {
             updatePage();
             break;
         case "addSensorGroup":
-            var e = addSensorGroup(args[0], args[1], args[2], args[3], args[4]);
+            addSensorGroup.call($('.canvas'), args[0], args[1], args[2], args[3], args[4]);
             break;
         default:
             alert('function "' + fncname + '" not defined');
     }
 
+    /*
     if (e !== undefined)
         $('.canvas').append(e.outerHTML);
-
+        */
+    $('.group')
+        /*
+        .draggable({
+            grid: [$('.canvas').data('gridUnitX'),$('.canvas').data('gridUnitY')],
+            containment: 'parent'
+        })
+        */
     return;
 }
 
@@ -73,7 +81,7 @@ function toggleGrid() {
     for (var i = 0; i < holder.data('gridSizeX'); i++)
         for(var j = 0; j < holder.data('gridSizeY'); j++)
         {
-            var e = newWidget(1, 1, i, j);
+            var e = newWidget(i, j, 1, 1);
             e.className = 'grid';
             holder.append(e.outerHTML);
         }
@@ -117,62 +125,12 @@ function initPage2(sizeX, sizeY) {
     console.log('gridSize', sizeX, sizeY);
     console.log('unitX/Y', unit0*scale);
     console.log('scale', scale1, scale2, scale);
-
 }
-
-function initPage(){
-    var gridUnitX = 50;
-    var gridUnitY = 50;
-
-    var wdt0 = screen.width * 0.9;
-    var hgt0 = (screen.height 
-                - $('.banner').css('height').toNum()
-                - $('.footer').css('height').toNum()) * 0.95;
-
-    var gridSizeX = Math.floor(wdt0 / gridUnitX);
-    var gridSizeY = Math.floor(hgt0 / gridUnitY);
-    girdSizeX = (gridSizeX % 2 == 0) ? gridSizeX : gridSizeX - 1;
-    girdSizeY = (gridSizeY % 2 == 0) ? gridSizeY : gridSizeY - 1;
-
-    var hgt = ($(window).height() 
-                - $('.banner').css('height').toNum()
-                - $('.footer').css('height').toNum()) * 0.95;
-    var scale = Math.floor(hgt / hgt0 * 100) / 100;
-    hgt = gridSizeY * gridUnitY * scale;
-    var wdt = gridSizeX * gridUnitX * scale;
-
-    var margin = ($(window).height() 
-                - $('.banner').css('height').toNum()
-                - $('.footer').css('height').toNum() 
-                - hgt) / 2;
-
-    //alert('{0} x {1}'.format(screen.width, screen.height));
-
-    $('.canvas').css('margin-top', margin + 'px');
-    $('.canvas').css('height', hgt+'px');
-    $('.canvas').css('width', wdt+'px');
-    
-    $('.canvas').data('height', hgt);
-    $('.canvas').data('width', wdt);
-    $('.canvas').data('height-fullscreen', hgt0);
-    $('.canvas').data('width-fullscreen', wdt0);
-
-    $('.canvas').data('gridUnitX', gridUnitX);
-    $('.canvas').data('gridUnitY', gridUnitY);
-    $('.canvas').data('gridSizeX', gridSizeX);
-    $('.canvas').data('gridSizeY', gridSizeY);
-    $('.canvas').data('scale', scale);
-
-    console.log("gridSize:", gridSizeX, gridSizeY);  // grid dimensions
-    console.log("scale:", scale);       // canvas relative scale between fullscreen and maximize
-    console.log("canvas size:", wdt0, hgt0);  // canvas size when fullscreen
-    console.log("canvas size:", wdt, hgt);    // canvas size when maximize
-}
-
 
 /*
  * Library for Widgets
  */
+/*
 function newWidget0(dx, dy, posx, posy, scale) {
     var holder = $('.canvas');
 
@@ -208,3 +166,4 @@ function drawSensor(posx, posy, sensorid, scale) {
     
     return e;
 }
+*/
