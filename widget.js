@@ -1,5 +1,5 @@
 function newWidget(px, py, dx, dy, scale) {
-    var e = document.createElement('div');
+    var e = document.createElement('span');
     var holder = $('.canvas');
 
     scale = defaultFor(scale, holder.data('scale'));
@@ -28,7 +28,7 @@ function sensorTemplate(e) {
     s0.innerHTML += '<br>' + this.comment;
  
     var s1 = document.createElement('div');
-    s1.id = this.id;
+    s1.className = this.id;
     s1.style.position = 'absolute';
     s1.style.fontSize = 50*scale + 'px';
     s1.style.right = 6*scale + 'px';
@@ -47,6 +47,39 @@ function sensorTemplate(e) {
     e.appendChild(s0);
     e.appendChild(s1);
     e.appendChild(s2);
+}
+
+function sensorPlotTemplate(e) {
+    var scale = e.dataset.scale;
+
+    var s0 = document.createElement('div');
+    s0.style.position = 'absolute';
+    s0.style.fontSize = 14*scale +'px';
+    s0.style.left = 5*scale + 'px';
+    s0.innerHTML = this.name;
+    s0.innerHTML += '<br>' + this.comment;
+
+    var s1 = document.createElement('div');
+    s1.style.position = 'absolute';
+    s1.style.fontSize = 40*scale + 'px';
+    s1.style.right = 5*scale +'px';
+    s1.style.top = 20*scale +'px';
+    s1.className = this.id;
+    var s10 = document.createElement('span');
+    var s11 = document.createElement('span');
+    s10.id = 'value';
+    s10.innerHTML = (this.value === undefined) 
+        ? 'NAN' 
+        : this.value.toFixed(3);
+
+    s11.id = 'unit';
+    s11.style.fontSize = 60+'%';
+    s11.innerHTML = '&nbsp;';
+    s11.innerHTML += this.unit;
+    $(s1).append(s10, s11);
+
+    e.appendChild(s0);
+    e.appendChild(s1);
 }
 
 function sensorFetchData1() {
@@ -71,7 +104,7 @@ function sensorFetchData() {
 }
 
 
-function addSensor(px, py, sensorId, scale) {
+function addSensorWidget(px, py, sensorId, scale) {
     var e = newWidget(px, py, 4, 2, scale);
     e.className = 'tile';
     drawSensor = sensorTemplate.bind(SNS[sensorId]);
@@ -79,7 +112,15 @@ function addSensor(px, py, sensorId, scale) {
     return e;
 }
 
-function addSubSensor(px, py, sensorId, scale) {
+function addSubPlotSensorWidget(px, py, sensorId, scale) {
+    var e = newWidget(px, py, 6, 4, scale);
+    e.className = 'subtile';
+    drawSensor = sensorPlotTemplate.bind(SNS[sensorId]);
+    drawSensor(e);
+    return e;
+}
+
+function addSubSensorWidget(px, py, sensorId, scale) {
     var e = newWidget(px, py, 4, 2, scale);
     e.className = 'subtile';
     drawSensor = sensorTemplate.bind(SNS[sensorId]);
@@ -99,39 +140,11 @@ function updateAllSensors() {
         var value = (sensor.value === undefined)
             ? 'NAN'
             : sensor.value.toFixed(3);
-        $('#'+sensor.id).html(value);
+        //$('#'+sensor.id).html(value);
+        $('.' + sensor.id + ' #value').each(function() {
+            $(this).html(value);
+        });
     }
-}
-
-function sensorGroupTemplate(e) {
-    
-
-}
-
-/*
- * Find size of contents
- */
-function contentSize() {
-    /*
-    var width = 0;
-    var height = 0;
-    $(this).find('.tile').each(function() {
-        var w = $(this).offset().left 
-                + $(this).css('width').toNum() 
-                - $('.canvas').offset().left 
-                - $('.canvas').css("borderLeftWidth").toNum();
-        var h = $(this).offset().top 
-                + $(this).css('height').toNum()
-                - $('.canvas').offset().top 
-                - $('.canvas').css("borderTopWidth").toNum();
-        if (w > width) width = w;
-        if (h > height) height = h;
-    });
-    console.log(width, height);
-    */
-    var width = 0;
-    var height = this.contentWindow.document.body.scrollHeight;
-    return {width: width, height: height};
 }
 
 
@@ -140,8 +153,8 @@ function addSensorGroup2(dx, dy, px, py, name, scale) {
     var e = newWidget(px, py, dx, dy, scale);
 
     var el = document.createElement('ul');
-    $(el).append($('<li class="ui-state-default">'+addSensor(0,0,'sensor1').outerHTML+'</li>'));
-    $(el).append($('<li class="ui-state-default">'+addSensor(0,0,'sensor2').outerHTML+'</li>'));
+    $(el).append($('<li class="ui-state-default">'+addSensorWidget(0,0,'sensor1').outerHTML+'</li>'));
+    $(el).append($('<li class="ui-state-default">'+addSensorWidget(0,0,'sensor2').outerHTML+'</li>'));
     $(el).sortable()
         .disableSelection();
     $(e).append($(el));
@@ -193,27 +206,33 @@ function groupTemplate(e) {
 };
 
 function addSensorGroup(px, py, dx, dy, groupId, scale) {
+    var unitX = $('.canvas').data('gridUnitX');
+    var unitY = $('.canvas').data('gridUnitY');
     var w = newWidget(px, py, dx, dy, scale);
     var drawGroup = groupTemplate.bind(GRP['group1']);
+
     drawGroup(w);
 
     $(w).addClass('group')
         .draggable({
-            grid: [$('.canvas').data('gridUnitX'),$('.canvas').data('gridUnitY')],
+            grid: [unitX,unitY],
             containment: 'parent',
         })
         .resizable({
-            grid: $('.canvas').data('gridUnitX'),
+            grid: [unitX,unitY],
+            minWidth: 6*unitX,
+            minHeight: 7*unitY,
             handles: 'ne, se',
             containment: 'parent',
             stop: function() {
                 var width = $(this).children('.sortable_container').css('width').toNum();
                 var height = $(this).children('.sortable_container').css('height').toNum();
+                alert(height+' '+$(this).css('height'));
                 if ( $(this).css('width').toNum() < width ) {
                     $(this).css('width', width);
                 }
-                if ( $(this).css('height').toNum() - 1 < height ) {
-                    $(this).css('height', height + $('.canvas').data('gridUnitX'));
+                if ( $(this).css('height').toNum() < height + unitY) {
+                    $(this).css('height', height + unitY);
                 }
             },
         });
@@ -222,10 +241,12 @@ function addSensorGroup(px, py, dx, dy, groupId, scale) {
     $(c).addClass('sortable_container')
         .sortable();
 
-    s1 = addSubSensor(0,0,'sensor1',scale);
-    s2 = addSubSensor(0,0,'sensor2',scale);
+    s1 = addSubSensorWidget(0,0,'sensor1',scale);
+    s2 = addSubSensorWidget(0,0,'sensor2',scale);
+    s3 = addSubPlotSensorWidget(0,0,'sensor1',scale);
     $(c).append($(s1));
     $(c).append($(s2));
+    $(c).append($(s3));
 
     for (var i=0; i<6; i++) {
         var t = newWidget(0,0,2,2,scale);
