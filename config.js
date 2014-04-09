@@ -31,6 +31,13 @@ var SNS = {
                 'TempMon',
                 2),
     },
+    'sensor3': {
+        id: 'sensorid3',
+        name: 'random',
+        comment: '',
+        unit: 'm/s',
+        url: 'http://localhost/~chuan/RandomNumber/getnumber.cgi',
+    }
 };
 
 var GRP = {

@@ -1,8 +1,9 @@
 function newWidget(px, py, dx, dy, scale) {
-    var e = document.createElement('span');
+    var e = document.createElement('div');
     var holder = $('.canvas');
 
     scale = defaultFor(scale, holder.data('scale'));
+
     e.dataset.scale = scale;
 
     if (px !== -1)
@@ -60,11 +61,6 @@ function sensorPlotTemplate(e) {
     s0.innerHTML += '<br>' + this.comment;
 
     var s1 = document.createElement('div');
-    s1.style.position = 'absolute';
-    s1.style.fontSize = 40*scale + 'px';
-    s1.style.right = 5*scale +'px';
-    s1.style.top = 20*scale +'px';
-    s1.className = this.id;
     var s10 = document.createElement('span');
     var s11 = document.createElement('span');
     s10.id = 'value';
@@ -77,7 +73,12 @@ function sensorPlotTemplate(e) {
     s11.innerHTML = '&nbsp;';
     s11.innerHTML += this.unit;
     $(s1).append(s10, s11);
-
+    s1.style.position = 'absolute';
+    s1.style.fontSize = 40*scale + 'px';
+    s1.style.right = 5*scale +'px';
+    s1.style.top = 20*scale +'px';
+    s1.className = this.id;
+ 
     e.appendChild(s0);
     e.appendChild(s1);
 }
@@ -147,6 +148,8 @@ function updateAllSensors() {
     }
 }
 
+function vauleTemplate() {
+}
 
 function addSensorGroup2(dx, dy, px, py, name, scale) {
     var drawGroup = sensorGroupTemplate.bind(GRP['group1']);
@@ -198,7 +201,7 @@ function groupTemplate(e) {
     var scale = e.dataset.scale;
     var s0 = document.createElement('div');
     s0.style.position = 'absolute';
-    s0.style.fontSize = 1.8*scale+'em';
+    s0.style.fontSize = 1.4*scale+'em';
     s0.style.left = 5*scale + 'px';
     s0.innerHTML = this.name;
     //s0.innerHTML += '<br>' + this.comment;
@@ -225,24 +228,28 @@ function addSensorGroup(px, py, dx, dy, groupId, scale) {
             handles: 'ne, se',
             containment: 'parent',
             stop: function() {
+                /*
                 var width = $(this).children('.sortable_container').css('width').toNum();
                 var height = $(this).children('.sortable_container').css('height').toNum();
-                alert(height+' '+$(this).css('height'));
+                //alert(height+' '+$(this).css('height'));
                 if ( $(this).css('width').toNum() < width ) {
                     $(this).css('width', width);
                 }
                 if ( $(this).css('height').toNum() < height + unitY) {
                     $(this).css('height', height + unitY);
                 }
+                */
+                $(this).children('.sortable_container').css('width', $(this).css('width'));
+                $(this).children('.sortable_container').css('height', $(this).css('height').toNum()-unitY);
             },
         });
 
-    var c = newWidget(0,1,-1,-1,scale);
+    var c = newWidget(0,1,8,6,scale);
     $(c).addClass('sortable_container')
         .sortable();
 
     s1 = addSubSensorWidget(0,0,'sensor1',scale);
-    s2 = addSubSensorWidget(0,0,'sensor2',scale);
+    s2 = addSubSensorWidget(0,0,'sensor3',scale);
     s3 = addSubPlotSensorWidget(0,0,'sensor1',scale);
     $(c).append($(s1));
     $(c).append($(s2));
